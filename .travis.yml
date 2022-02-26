@@ -10,7 +10,8 @@ before_install:
 
 script:
     # 3. Run tests then exit
-    - docker run rawanad/react-test npm test -- --coverage
+    #- docker run rawanad/react-test npm test -- --coverage
+    - docker run -e CI=true USERNAME/react-test npm test
 
 after_success:
     # 4. Build production versions of all projects
