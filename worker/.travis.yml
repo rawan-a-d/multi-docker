@@ -1,0 +1,29 @@
+sudo: required
+
+services:
+    # 1. Specify docker as a dependency
+    - docker
+
+before_install:
+    # 2. Create an image from development file to test the client
+    - docker build -t rawanad/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    # 3. Run tests then exit
+    - docker run rawanad/react-test npm test -- --coverage
+
+after_success:
+    # 4. Build production versions of all projects
+    - docker build -t rawanad/multi-client ./client
+    - docker build -t rawanad/multi-nginx ./nginx
+    - docker build -t rawanad/multi-server ./server
+    - docker build -t rawanad/multi-worker ./worker
+
+    # 5. Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # 6. Take those images and push them to docker hub
+    - docker push rawanad/multi-client
+    - docker push rawanad/multi-nginx
+    - docker push rawanad/multi-server
+    - docker push rawanad/multi-worker
