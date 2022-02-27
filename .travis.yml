@@ -28,3 +28,19 @@ after_success:
     - docker push rawanad/multi-nginx
     - docker push rawanad/multi-server
     - docker push rawanad/multi-worker
+
+# Deploy to AWS
+deploy:
+    provider: elasticbeanstalk
+    # found in AWS url
+    region: 'us-east-1'
+    # app name
+    app: 'multi-docker'
+    env: 'MultiDocker-env'
+    # AWS S3 bucket
+    bucket_name: 'elasticbeanstalk-us-east-1-609456652928'
+    bucket_path: 'docker-multi'
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
