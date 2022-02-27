@@ -1,6 +1,6 @@
 {
 	"AWSEBDockerrunVersion": 2,
-	"containerDefintions": [
+	"containerDefinitions": [
 		{
 			"name": "client",
 			"image": "rawanad/multi-client",
